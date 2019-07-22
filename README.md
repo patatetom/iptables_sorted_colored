@@ -1,2 +1,4 @@
-# iptables_sorted_colored
-Sort and color output of iptables -S
+# iptables -S | sorted | colored
+
+Sort and color the output of iptables --list-rules
+
