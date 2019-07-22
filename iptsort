@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# read rules from stdin
+rules=$( cat )
+
+# rules ?
+[ ! "${rules}" ] &&
+    echo 'no data !' > /dev/stderr &&
+        exit 1
+
+# bad rules ?
+grep -qv '^-' <<< "${rules}" &&
+    echo 'bad data ! (use iptables -S as input)' > /dev/stderr &&
+        exit 2
+
+# iptables chains
+chains="INPUT FORWARD OUTPUT"
+for chain in ${chains}
+do
+	echo ${chain}:
+	chain=$( egrep "\<${chain}\>" <<< "${rules}" )
+	sed 1d <<< "${chain}"
+	head -1 <<< "${chain}"
+	echo
+done
+
+# user chains
+chains=$( awk '/^-N \w+$/{print $2}' <<< "${rules}" )
+if [ "${chains}" ]
+then
+    for chain in ${chains}
+    do
+    	echo ${chain}:
+        egrep "\<${chain}\>" <<< "${rules}"
+        echo
+    done
+fi

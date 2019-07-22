@@ -1,0 +1,43 @@
+%YAML 1.2
+---
+name: Iptables
+scope: source.iptables
+file_extensions: []
+first_line_match: '((-P INPUT (ACCEPT|DROP))|INPUT:)'
+contexts:
+  main:
+    - include: numeric
+    - match: '(-P .* ACCEPT$)'
+      captures:
+        0: markup.deleted.iptables
+    - match: '(-A (IN|OUT)PUT -j ACCEPT$)'
+      captures:
+        0: markup.deleted.iptables
+    - match: '(-P .* DROP$)'
+      captures:
+        0: markup.inserted.iptables
+    - match: '(-A \w+ -j (DROP|REJECT)( --reject-.* .*)?$)'
+      captures:
+        0: markup.inserted.iptables
+    - match: '(-j ACCEPT$)'
+      captures:
+        0: markup.deleted.iptables
+    - match: '(-j DROP$)'
+      captures:
+        0: markup.inserted.iptables
+    - match: '(-j REJECT( --reject-.* .*)?$)'
+      captures:
+        0: markup.inserted.iptables
+    - match: '(.* -j LOG( --log-.* .*)?$)'
+      captures:
+        0: comment.line.iptables
+    - match: '(-N \w+$)'
+      captures:
+        0: markup.heading.iptables
+    - match: '(-j \w+$)'
+      captures:
+        0: markup.heading.iptables
+  numeric:
+    - match: '(\b\d+\.?)'
+      captures:
+        0: constant.numeric.iptables
