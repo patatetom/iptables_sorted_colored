@@ -13,3 +13,12 @@ Sort and color the output of `iptables --list-rules`
 - download [iptsort](iptsort) bash script in `/usr/local/bin/`
 - after verification, make it executable with `chmod +x /usr/local/bin/iptsort`
 - try it with `iptables -S | iptsort`
+
+
+### bat
+
+- install (or download it in `/usr/local/bin/` if not available for your distribution) the excellent [bat](https://github.com/sharkdp/bat)
+- build the necessary tree structure with `mkdir -p ~/.cache/bat/ ~/.config/bat/syntaxes/`
+- download the [lexer](iptables.sublime-syntax) in `~/.config/bat/syntaxes/`
+- rebuild the bat cache with `bat cache --build`
+- try it with `iptables -S | bat`
