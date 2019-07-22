@@ -22,3 +22,6 @@ Sort and color the output of `iptables --list-rules`
 - download the [lexer](iptables.sublime-syntax) in `~/.config/bat/syntaxes/`
 - rebuild the bat cache with `bat cache --build`
 - try it with `iptables -S | bat`
+
+that's all !
+you can now orchestrate the whole thing : `iptables -S | iptsort | bat`
