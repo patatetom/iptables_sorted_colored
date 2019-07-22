@@ -23,7 +23,8 @@ Sort and color the output of `iptables --list-rules`
 - rebuild the bat cache with `bat cache --build`
 - try it with `iptables -S | bat`.
 
-that's all !
+**that's all !**
+
 you can now orchestrate the whole thing with `iptables -S | iptsort | bat`.
 
 
@@ -43,3 +44,9 @@ function iptables {
   fi
 }
 ```
+
+
+
+---
+
+the lexer was partially written using [Iro](https://eeyo.io/iro/).
