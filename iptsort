@@ -9,7 +9,7 @@ rules=$( cat )
         exit 1
 
 # bad rules ?
-grep -qv '^-' <<< "${rules}" &&
+grep -qv '^-P INPUT' <( head -1 <<< "${rules}" ) &&
     echo 'bad data ! (use iptables -S as input)' > /dev/stderr &&
         exit 2
 
