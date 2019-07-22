@@ -7,13 +7,13 @@ first_line_match: '((-P INPUT (ACCEPT|DROP))|INPUT:)'
 contexts:
   main:
     - include: numeric
-    - match: '(-P .* ACCEPT$)'
+    - match: '(-P \w+ ACCEPT$)'
       captures:
         0: markup.deleted.iptables
     - match: '(-A (IN|OUT)PUT -j ACCEPT$)'
       captures:
         0: markup.deleted.iptables
-    - match: '(-P .* DROP$)'
+    - match: '(-P \w+ DROP$)'
       captures:
         0: markup.inserted.iptables
     - match: '(-A \w+ -j (DROP|REJECT)( --reject-.* .*)?$)'
