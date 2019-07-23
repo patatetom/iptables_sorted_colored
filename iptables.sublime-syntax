@@ -7,16 +7,10 @@ first_line_match: '((-P INPUT (ACCEPT|DROP))|INPUT:)'
 contexts:
   main:
     - include: numeric
-    - match: '(-P \w+ ACCEPT$)'
+    - match: '(-P (FORWARD|INPUT|OUTPUT) ACCEPT$)'
       captures:
         0: markup.deleted.iptables
-    - match: '(-A (IN|OUT)PUT -j ACCEPT$)'
-      captures:
-        0: markup.deleted.iptables
-    - match: '(-P \w+ DROP$)'
-      captures:
-        0: markup.inserted.iptables
-    - match: '(-A \w+ -j (DROP|REJECT)( --reject-.* .*)?$)'
+    - match: '(-P (FORWARD|INPUT|OUTPUT) DROP$)'
       captures:
         0: markup.inserted.iptables
     - match: '(-j ACCEPT$)'
@@ -25,16 +19,16 @@ contexts:
     - match: '(-j DROP$)'
       captures:
         0: markup.inserted.iptables
-    - match: '(-j REJECT( --reject-.* .*)?$)'
+    - match: '(-j REJECT( --reject-with (icmp-((net|host|port|proto)-unreachable|(net|host)-prohibited)|tcp-reset))?$)'
       captures:
         0: markup.inserted.iptables
-    - match: '(.* -j LOG( --log-.* .*)?$)'
+    - match: '(^.* -j LOG( --log-(ip-options|tcp-options|tcp-sequence|(level [a-z]+)|(prefix .+)))?$)'
       captures:
         0: comment.line.iptables
-    - match: '(-N \w+$)'
+    - match: '(-N [^ ]+$)'
       captures:
         0: markup.heading.iptables
-    - match: '(-j \w+$)'
+    - match: '(-j [^ ]+$)'
       captures:
         0: markup.heading.iptables
   numeric:
