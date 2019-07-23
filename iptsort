@@ -18,9 +18,9 @@ chains="INPUT FORWARD OUTPUT"
 for chain in ${chains}
 do
 	echo ${chain}:
-	chain=$( egrep "\<${chain}\>" <<< "${rules}" )
-	sed 1d <<< "${chain}"
-	head -1 <<< "${chain}"
+	links=$( egrep "\<${chain}\>" <<< "${rules}" )
+	sed -e 1d -e "s/^-A ${chain} //g" <<< "${links}"
+	head -1 <<< "${links}"
 	echo
 done
 
@@ -31,7 +31,8 @@ then
     for chain in ${chains}
     do
     	echo ${chain}:
-        egrep "\<${chain}\>" <<< "${rules}"
+        links=$( egrep "^-A \<${chain}\>" <<< "${rules}" )
+        sed "s/^-A ${chain} //g" <<< "${links}"
         echo
     done
 fi
