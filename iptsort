@@ -17,21 +17,26 @@ grep -qv '^-P INPUT' <( head -1 <<< "${rules}" ) &&
 chains="INPUT FORWARD OUTPUT"
 for chain in ${chains}
 do
-	echo ${chain}:
-	links=$( egrep "\<${chain}\>" <<< "${rules}" )
-	sed -e 1d -e "s/^-A ${chain} //g" <<< "${links}"
-	head -1 <<< "${links}"
-	echo
+    echo ${chain}:
+    # get links of the current chain
+    links=$( egrep "\<${chain}\>" <<< "${rules}" )
+    # remove first line (policy) and "append" statment
+    sed -e 1d -e "s/^-A ${chain} //g" <<< "${links}"
+    # end with policy
+    head -1 <<< "${links}"
+    echo
 done
 
 # user chains
-chains=$( awk '/^-N \w+$/{print $2}' <<< "${rules}" )
+chains=$( awk '/^-N [^ ]+$/{print $2}' <<< "${rules}" )
 if [ "${chains}" ]
 then
     for chain in ${chains}
     do
-    	echo ${chain}:
+        echo ${chain}:
+        # get links of the current user chain
         links=$( egrep "^-A \<${chain}\>" <<< "${rules}" )
+        # remove "append" statment
         sed "s/^-A ${chain} //g" <<< "${links}"
         echo
     done
