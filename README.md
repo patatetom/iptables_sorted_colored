@@ -35,16 +35,29 @@ you can now orchestrate the whole thing with `iptables -S | iptsort | bat`.
  
 ```bash
 function iptables {
-  ipt=$( which iptables ) || return;
+  org=$( which iptables ) || return;
   if [ "${1}" ]
   then
-    "${ipt}" $@
+    "${org}" $@
   else
-    "${ipt}" -S | iptsort | bat
+    "${org}" -S | iptsort | bat -p
   fi
 }
 ```
 
+this following helper can also be very useful :
+
+```bash
+function ss {
+  org=$( which ss ) || return;
+  if [ "${1}" ]
+  then
+    "${org}" $@
+  else
+    "${org}" -plntu | sed -e 1d -e 's/users:(//g' -e 's/)$//g' | awk '{print $1, $5, $7}' | column -t | bat -pl c
+  fi
+}
+```
 
 
 ---
